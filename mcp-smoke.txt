@@ -1,0 +1,88 @@
+MCP SMOKE TEST — Hurst Exponent Estimation via Quantile Graphs
+==============================================================
+Paper : Campanharo & Ramos, Physica A 444 (2016) 43–48
+DOI   : http://dx.doi.org/10.1016/j.physa.2015.09.094
+Index : dec-fvl0ysk0fhz73leknehowwh171w7
+File  : dfl-bx7t1r2kyry02wnxq9cre5vgl3n4  ← confirmed by findFilesInIndex
+        (a1b6fcf9-73b5-46ee-827f-1a030eb994d7_Hurst_exponent_estimation_of_self_affine.pdf)
+
+----------------------------------------------------------------------
+RETRIEVAL RESULTS — methodology evidence (retrieveFromIndex, topK=8, rerankTopN=5)
+----------------------------------------------------------------------
+
+[CHUNK 1 | pages 1–2]
+Goal: estimate the Hurst exponent H of self-affine time series (fractional
+Brownian motion, fBm) using Quantile Graphs (QGs).
+
+Key claims (Abstract / Highlights):
+• A QG is built by mapping the Q quantiles of a time series into Q nodes of a
+  directed, weighted graph.
+• H is computed as the power-law scaling exponent of the mean jump length
+  Δ(k) performed by a random walker on the QG across time differences k.
+• The method is numerically simple with a single free parameter Q
+  (number of quantiles/nodes).
+• With a cumulative-sum pre-processing step the method extends to fractional
+  Gaussian noises (fGn).
+• Comparison of Ĥ_QG against exact H values shows excellent agreement.
+
+[CHUNK 2 | pages 2–3]
+Section 2 — Methods (QG construction):
+• Coarse-grain the time-series value range into Q quantiles q_1,…,q_Q.
+• Map M: time series X → network g = {N, A}, where each quantile q_i → node n_i.
+• Two nodes n_i and n_j are connected by a weighted arc whenever x(t) ∈ q_i
+  and x(t+k) ∈ q_j, for t = 1,…,T and k = 1,…,k_max < T.
+• Arc weight w_ij^k = count of transitions from q_i to q_j at lag k,
+  normalised by total transitions → Markov transition matrix W_k
+  (row-stochastic: Σ_j w_ij^k = 1).
+• Network is weighted, directed, connected.
+
+Random-walk & H estimation (equation 1, page 3):
+  Δ(k) = (1/L) Σ_{l=1}^{L} δ_{l,k}(i,j),   where δ_{l,k}(i,j) = |i − j|
+  For fBm:  Δ(k) ~ k^H  (power-law scaling).
+  H is extracted from the slope of a log–log plot of Δ(k) vs k via
+  linear regression on log-transformed coordinates.
+
+[CHUNK 3 | pages 2–3]  (Introduction context)
+• fBm: non-stationary, self-affine, power-spectrum P(ω) ~ ω^{-β},
+  with 1 < β ≤ 3 for motions, −1 ≤ β ≤ 1 for noises.
+• Relationship: β = 2H+1 for motions, β = 2H−1 for noises.
+• Classical Brownian motion: H = 1/2.
+• Positive long-range correlations: H > 1/2; anti-correlations: H < 1/2.
+• For noises, cumulative sum converts fGn → fBm before applying QG.
+
+[CHUNK 4 | pages 3–4]
+Section 3 — Results:
+• Synthetic data generated with wavelet-based synthesis [Ref 23].
+• Default parameters: Q = 50, T = 10,000, averaged over 100 realisations.
+• Power-law scaling of Δ(k) spans more than two decades (Fig. 3).
+• Linear regression [Refs 24,25] on log-transformed Δ(k) vs k gives Ĥ_QG;
+  error bars = 95% confidence intervals.
+• Strong linear correlation between Ĥ_QG and exact H confirmed (Fig. 4).
+• Q sensitivity: |Ĥ_QG − H| < 0.02 for all β at Q = 50 and Q = 100 (Fig. 5).
+• Computational cost grows linearly with Q for fixed T.
+
+Section 4 — Conclusions:
+• QG method successfully estimates H for fBm and (with modification) fGn.
+• Single free parameter Q; robust estimation; error driven by power-law
+  fitting framework, not by Q choice.
+
+----------------------------------------------------------------------
+PARAMETER SUMMARY (confirmed from paper)
+----------------------------------------------------------------------
+Q (quantiles/nodes) : 50 (default), also tested at 100         [pages 3–4]
+T (series length)   : 10,000 data points                       [page 3]
+Realisations        : 100 (results averaged)                   [page 3]
+k range             : k = 1,…,k_max < T                        [pages 2–3]
+H range             : 0 < H < 1                                [page 2]
+Fitting             : OLS linear regression on log(Δ(k)) vs log(k) [page 3]
+CI                  : 95% confidence intervals on Ĥ_QG          [page 3]
+Synthetic generator : wavelet-based synthesis [Ref 23]          [page 3]
+Accuracy threshold  : |Ĥ_QG − H| < 0.02 for Q ∈ {50,100}     [pages 3–4]
+
+----------------------------------------------------------------------
+SMOKE TEST VERDICT
+----------------------------------------------------------------------
+✓  findFilesInIndex  — file resolved, ID matches mcp_file_id exactly.
+✓  retrieveFromIndex — 5 chunks returned, pages 1–4 covered, methodology
+                       fully described without fabrication.
+✓  No evidence invented; all claims trace to retrieved page ranges above.
